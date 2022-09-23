@@ -62,7 +62,7 @@ custom:
   domainMap:
     prod:
       domain: nft.llamalend.com
-      certificateArn: "arn:aws:acm:eu-central-1:964585596951:certificate/cc42a639-f92c-4c2c-99e5-dc7d0551e5c3"
+      certificateArn: "arn:aws:acm:us-east-1:964585596951:certificate/ac2a31be-18a1-480c-8be0-067e1580d144"
   domain: ${self:custom.domainMap.${self:custom.stage}.domain}
   certificateArn: ${self:custom.domainMap.${self:custom.stage}.certificateArn}
 
