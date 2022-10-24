@@ -1,25 +1,41 @@
 import { ethers } from "ethers"
 import { fetchIpfsUrl } from "./utils";
+import fetch from "node-fetch";
 
 const provider = new ethers.providers.CloudflareProvider()
 
 const handler = async (
     event: AWSLambda.APIGatewayEvent
 ): Promise<any> => {
-    let { nftContract, nftId, chainId, loanContract } = event.pathParameters!;
+    let { nftContract, nftId, chainId } = event.pathParameters!;
     if(Number(chainId) !== 1){
         return {
             statusCode: 404,
             body: "Only mainnet accepted"
         }
     }
-    const tubbyLoan = new ethers.Contract(
-        loanContract!,
-        //function loans(uint256 id) public view returns (nft uint256, startTime uint256, startInterestSum uint256, borrowed uint256)
-        [{"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"loans","outputs":[{"internalType":"uint256","name":"nft","type":"uint256"},{"internalType":"uint256","name":"startTime","type":"uint256"},{"internalType":"uint256","name":"startInterestSum","type":"uint256"},{"internalType":"uint256","name":"borrowed","type":"uint256"}],"stateMutability":"view","type":"function"}],
-        provider
-    )
-    const nftUsed = await tubbyLoan.loans(nftId)
+    const hexId = ethers.BigNumber.from(nftId).toHexString()
+    const loanData = await fetch("https://api.thegraph.com/subgraphs/name/0xngmi/llamalend", {
+        method: "POST",
+        body: JSON.stringify({
+            query:
+`query getloan($loan: ID){
+	loans(where: {
+		id: $loan
+	}){
+		id
+		originalOwner
+		owner
+		nftId
+	}
+}`,
+            variables:{
+                loan: hexId
+            }
+        })
+    }).then(r=>r.json())
+    
+    const nftUsed = loanData.loans[0].nftId
     const nft = new ethers.Contract(
         nftContract!,
         ['function tokenURI(uint256 id) public view returns (string memory)'],
@@ -30,9 +46,9 @@ const handler = async (
     return {
         statusCode: 200,
         body: JSON.stringify({
-            "name": `Tubby Collateral: ${metadata.name}`,
-            "description": "Tubby cat used for collateral. Be careful when buying cause the loan for this NFT might have already expired!",
-            "image": `https://api.tubbysea.com/image/${Buffer.from(metadata.image).toString('base64')}`,
+            "name": `LlamaLend Collateral: ${metadata.name}`,
+            "description": "NFT used for collateral in LlamaLend. Be careful when buying cause the loan for this NFT might have already expired!",
+            "image": `https://nft.llamalend.com/image/${Buffer.from(metadata.image).toString('base64')}`,
             "attributes": metadata.attributes
         }),
         headers: {
