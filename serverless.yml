@@ -67,6 +67,12 @@ custom:
   certificateArn: ${self:custom.domainMap.${self:custom.stage}.certificateArn}
 
 functions:
+  fallback:
+    handler: src/fallback.default
+    events:
+      - http:
+          path: /{params+}
+          method: any
   getNftMetadata:
     handler: src/getNftMetadata.default
     timeout: 120
