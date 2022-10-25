@@ -34,14 +34,14 @@ const handler = async (
             }
         })
     }).then(r=>r.json())
-    
-    const nftUsed = loanData.loans[0].nftId
+
+    const nftUsed = loanData.data.loans[0].nftId
     const nft = new ethers.Contract(
         nftContract!,
         ['function tokenURI(uint256 id) public view returns (string memory)'],
         provider
     )
-    const nftUrl = await nft.tokenURI(nftUsed.nft)
+    const nftUrl = await nft.tokenURI(nftUsed)
     const metadata = await fetchIpfsUrl(nftUrl).then(r => r.json())
     return {
         statusCode: 200,
@@ -56,5 +56,15 @@ const handler = async (
         }
     }
 }
+
+/*
+handler({
+    pathParameters: {
+        nftContract:"0xca7ca7bcc765f77339be2d648ba53ce9c8a262bd",
+        nftId: "10314990752111287182168670692777350499034773259711667084636201231969117076195",
+        chainId: "1"
+    }
+} as any).then(console.log)
+*/
 
 export default handler
