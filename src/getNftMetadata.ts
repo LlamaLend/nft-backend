@@ -1,5 +1,5 @@
 import { ethers } from "ethers"
-import { fetchIpfsUrl } from "./utils";
+import { fetchIpfsUrl } from "./utils/ipfs";
 import fetch from "node-fetch";
 
 const provider = new ethers.providers.CloudflareProvider()

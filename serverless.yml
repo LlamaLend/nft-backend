@@ -41,6 +41,10 @@ provider:
         - "s3:ListBucket"
         - "s3:*Object*"
       Resource: "*"
+    - Effect: "Allow"
+      Action:
+        - "ses:*"
+      Resource: "*"
   environment:
     tableName: ${self:custom.tableName}
     stage: ${self:custom.stage}
@@ -91,6 +95,18 @@ functions:
           method: get
           response:
             contentHandling: CONVERT_TO_BINARY
+  registerEmail:
+    handler: src/registerEmail.default
+    timeout: 120
+    memorySize: 2000
+    events:
+      - http:
+          path: email
+          method: post
+  notifyEmails:
+    handler: src/notifyEmails.default
+    events:
+      - schedule: cron(0 * * * ? *)
 
 resources:
   # CORS for api gateway errors

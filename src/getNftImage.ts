@@ -1,4 +1,4 @@
-import { fetchIpfsUrl } from "./utils";
+import { fetchIpfsUrl } from "./utils/ipfs";
 import sharp from "sharp";
 import { join } from "path";
 const overlayImage = require("./overlays/overlay.png");
