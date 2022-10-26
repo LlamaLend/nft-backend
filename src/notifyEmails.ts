@@ -3,7 +3,7 @@ import { sendEmail } from "./utils/email";
 import { execute } from "./utils/sql";
 
 async function getLoansInDeadline(start:number, end:number){
-  const loanData = await fetch("https://api.thegraph.com/subgraphs/name/0xngmi/llamalend", {
+  const loanData = await fetch("https://api.thegraph.com/subgraphs/name/0xngmi/llamalend-goerli", {
         method: "POST",
         body: JSON.stringify({
             query:
