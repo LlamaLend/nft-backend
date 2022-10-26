@@ -27,7 +27,7 @@ async function getLoansInDeadline(start:number, end:number){
             }
         })
     }).then(r=>r.json())
-    return loanData.data.loans as {
+    return (loanData.data.loans as {
       "id": string,
       "owner": string,
       "nftId": string,
@@ -35,7 +35,7 @@ async function getLoansInDeadline(start:number, end:number){
       "pool": {
         "name": string
       }
-    }[]
+    }[]).filter(loan=>loan.owner !== "0x0000000000000000000000000000000000000000")
 }
 
 async function notify(now:number, start:number, end:number, lastHour:boolean){
@@ -44,11 +44,10 @@ async function notify(now:number, start:number, end:number, lastHour:boolean){
     const emails = await execute(
       `SELECT
         address,
-        email,
+        email
       FROM emails
       WHERE
-        address=?;`, [loan.owner.toLowerCase()])
-    console.log(emails)
+        address = ?;`, [loan.owner.toLowerCase()])
     await Promise.all((emails[0] as any[]).map(email=>sendEmail(
       email.email,
       lastHour?"LlamaLend: 1hr till liquidation": "LlamaLend: 24 hours till liquidation",
