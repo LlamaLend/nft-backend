@@ -1,33 +1,15 @@
-import AWS from 'aws-sdk';
+const nodemailer = require("nodemailer");
 
 export function sendEmail(emailTo: string, subject: string, body: string) {
-    // Create sendEmail params 
-    var params = {
-        Destination: { /* required */
-            ToAddresses: [
-                emailTo
-            ]
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+        host: "smtp.eu.mailgun.org", port: 587, auth: {
+            user: "postmaster@mail.llamalend.com", pass: process.env.API_KEY_MAILGUN,
         },
-        Message: { /* required */
-            Body: { /* required */
-            /*
-                Html: {
-                    Charset: "UTF-8",
-                    Data: "HTML_FORMAT_BODY"
-                },*/
-                Text: {
-                    Charset: "UTF-8",
-                    Data: body
-                }
-            },
-            Subject: {
-                Charset: 'UTF-8',
-                Data: subject
-            }
-        },
-        Source: 'sbf@llamalend.com', /* required */
-    };
+    });
 
-    // Create the promise and SES service object
-    return new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+    // send mail with defined transport object 
+    return transporter.sendMail({
+        from: 'sbf@llamalend.com', to: emailTo, subject: subject, text: body
+    });
 }
