@@ -14,7 +14,7 @@ const handler = async (
             body: "Only mainnet accepted"
         }
     }
-    const hexId = ethers.BigNumber.from(nftId).toHexString()
+    const hexId = ethers.BigNumber.from(nftId).toHexString().replace("0x0", "0x") // subgraph removes leading zeroes
     const loanData = await fetch("https://api.thegraph.com/subgraphs/name/0xngmi/llamalend", {
         method: "POST",
         body: JSON.stringify({
@@ -62,7 +62,7 @@ const handler = async (
 handler({
     pathParameters: {
         nftContract:"0xca7ca7bcc765f77339be2d648ba53ce9c8a262bd",
-        nftId: "10314990752111287182168670692777350499034773259711667084636201231969117076195",
+        nftId: "726338828353479263797447667261028799525270172770471244411392985021395495697",
         chainId: "1"
     }
 } as any).then(console.log)
