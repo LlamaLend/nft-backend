@@ -4,7 +4,7 @@ import { Command } from "../Command";
 
 export const Register: Command = {
   data: new SlashCommandBuilder()
-    .setName("notify")
+    .setName("register")
     .setDescription("Registers Discord Account to address")
     .addStringOption((option) =>
       option

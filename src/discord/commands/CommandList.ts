@@ -5,4 +5,4 @@ import { List } from "./List";
 import { Register } from "./Register";
 import { Remove } from "./Remove";
 
-export const CommandList: Command[] = [Hello, Register, Help, Remove, List];
+export const CommandList: Command[] = [Hello, Register, Remove, List];
