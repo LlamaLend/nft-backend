@@ -2,7 +2,7 @@ import fetch from "node-fetch";
 import { sendEmail } from "./utils/email";
 import { execute } from "./utils/sql";
 
-async function getLoansInDeadline(start:number, end:number){
+export async function getLoansInDeadline(start:number, end:number){
   const loanData = await fetch("https://api.thegraph.com/subgraphs/name/0xngmi/llamalend", {
         method: "POST",
         body: JSON.stringify({
