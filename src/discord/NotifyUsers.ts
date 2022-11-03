@@ -6,18 +6,7 @@ export const NotifyUsers = async (client: Client, lastHour: boolean) => {
   const now = Math.round(Date.now() / 1e3);
   const start = lastHour ? now : now + 24 * 3600;
   const end = lastHour ? now + 3600 * 1.5 : now + 25 * 3600;
-  //const loans = await getLoansInDeadline(start, end);
-  const loans = [
-    {
-      id: "0",
-      owner: "0xfe5ee99fdbccfada674a3b85ef653b3ce4656e13",
-      nftId: "1",
-      deadline: "1667473200",
-      pool: {
-        name: "llama",
-      },
-    },
-  ];
+  const loans = await getLoansInDeadline(start, end);
 
   await Promise.all(
     loans.map(async (loan) => {
