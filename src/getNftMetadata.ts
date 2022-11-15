@@ -50,7 +50,7 @@ const handler = async (
         body: JSON.stringify({
             "name": `LlamaLend Collateral: ${metadata.name}`,
             "description": "NFT used for collateral in LlamaLend. Be careful when buying cause the loan for this NFT might have already expired!",
-            "image": `https://nft.llamalend.com/image/${deadline}/${Buffer.from(metadata.image).toString('base64')}`,
+            "image": `https://nft.llamalend.com/image2/${deadline}/${Buffer.from(metadata.image).toString('base64')}`,
             "attributes": metadata.attributes
         }),
         headers: {
