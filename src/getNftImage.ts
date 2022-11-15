@@ -3,6 +3,7 @@ import sharp from "sharp";
 import { join } from "path";
 import TextToSVG from "text-to-svg";
 const overlayImage = require("./overlays/overlay.png");
+const font = require("./fonts/Roboto-Medium.ttf");
 
 const handler = async (event: AWSLambda.APIGatewayEvent): Promise<any> => {
   const imageUrl = event.pathParameters!.imageUrl!;
@@ -16,7 +17,7 @@ const handler = async (event: AWSLambda.APIGatewayEvent): Promise<any> => {
       width: 2000,
     })
     .toBuffer({ resolveWithObject: true });
-  const textToSVG = TextToSVG.loadSync();
+  const textToSVG = TextToSVG.loadSync(font);
   const content = `Expires: ${new Date(liqTimestamp).toLocaleString("en-CA", {
     timeZone: "UTC",
     dateStyle: "short",
