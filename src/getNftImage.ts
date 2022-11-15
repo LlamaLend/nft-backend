@@ -6,7 +6,7 @@ const overlayImage = require("./overlays/overlay.png");
 
 const handler = async (event: AWSLambda.APIGatewayEvent): Promise<any> => {
   const imageUrl = event.pathParameters!.imageUrl!;
-  const liqTimestamp = 1669356000 * 1e3;
+  const liqTimestamp = Number(event.pathParameters!.liqudation!) * 1e3;
   const realUrl = new Buffer(imageUrl, "base64").toString();
   const imageData = await fetchIpfsUrl(realUrl).then((r) => r.arrayBuffer());
   const { data: overlay } = await sharp(join(__dirname, "..", overlayImage))
