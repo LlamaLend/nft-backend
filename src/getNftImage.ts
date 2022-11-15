@@ -21,7 +21,7 @@ const handler = async (event: AWSLambda.APIGatewayEvent): Promise<any> => {
   const content = `Expires: ${new Date(liqTimestamp).toLocaleString("en-CA", {
     timeZone: "UTC",
     dateStyle: "short",
-  } as any)}`;
+  } as any)} UTC`;
   const options: any = {
     x: 0,
     y: 0,
