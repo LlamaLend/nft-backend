@@ -27,6 +27,7 @@ const handler = async (
 		originalOwner
 		owner
 		nftId
+        deadline
 	}
 }`,
             variables:{
@@ -36,6 +37,7 @@ const handler = async (
     }).then(r=>r.json())
 
     const nftUsed = loanData.data.loans[0].nftId
+    const deadline = loanData.data.loans[0].deadline;
     const nft = new ethers.Contract(
         nftContract!,
         ['function tokenURI(uint256 id) public view returns (string memory)'],
@@ -49,6 +51,7 @@ const handler = async (
             "name": `LlamaLend Collateral: ${metadata.name}`,
             "description": "NFT used for collateral in LlamaLend. Be careful when buying cause the loan for this NFT might have already expired!",
             "image": `https://nft.llamalend.com/image/${Buffer.from(metadata.image).toString('base64')}`,
+            "deadline": deadline,
             "attributes": metadata.attributes
         }),
         headers: {
