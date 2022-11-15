@@ -91,7 +91,7 @@ functions:
     memorySize: 2000
     events:
       - http:
-          path: image/{imageUrl}
+          path: image/{deadline}/{imageUrl}
           method: get
           response:
             contentHandling: CONVERT_TO_BINARY
